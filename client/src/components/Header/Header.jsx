@@ -7,12 +7,14 @@ import {
   Navbar,
   NavDropdown,
 } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid="md">
-        <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
+        <Navbar.Brand>
+        <Link to="/">Notes App</Link></Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className='m-auto'>
@@ -30,9 +32,12 @@ const Header = () => {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link href="/my-notes">My Notes</Nav.Link>
+            <Nav.Link>
+              <Link to="/my-notes">My Notes</Link>
+            </Nav.Link>
             <NavDropdown title="Kapil" id="basic-nav-dropdown">
-              <NavDropdown.Item href="/my-profile">My Profile</NavDropdown.Item>
+              <NavDropdown.Item>
+                <Link to="/my-profile">My Profile</Link></NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="/logout">Logout</NavDropdown.Item>
             </NavDropdown>

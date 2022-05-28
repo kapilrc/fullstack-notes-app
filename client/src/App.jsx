@@ -1,20 +1,30 @@
 import { useState } from 'react'
+import { Routes, Route, Link } from "react-router-dom"
 import './App.css'
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer';
+import LandingPage from './pages/LandingPage/LandingPage';
 import Dashboard from './pages/Dashboard/Dashboard';
+import Login from './pages/Login/Login';
+import Register from './pages/Register/Register';
+import MyNotes from './pages/MyNotes/MyNotes';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <div className="App">
+    <>
       <Header />
-      <main style={{minHeight: '86vh'}}>
-        <Dashboard />
+      <main>
+       <Routes>
+         <Route path="/" exact element={<LandingPage />} />
+         <Route path="/home" element={<Dashboard />} />
+         <Route path="/login" element={<Login />} />
+         <Route path="/register" element={<Register />} />
+         <Route path="/my-notes" element={<MyNotes />} />
+       </Routes>
       </main>
       <Footer />
-    </div>
+    </>
   )
 }
 
