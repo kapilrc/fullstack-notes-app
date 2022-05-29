@@ -1,0 +1,18 @@
+.accordion-item {
+  border: none !important;
+
+}
+
+.accordion-item .accordion-button {
+  background-color: transparent;
+}
+
+.accordion-item button:focus {
+  box-shadow: none;
+  border: none;
+  background-color: transparent;
+}
+
+.accordion-item .accordion-button::after {
+  display: none;
+}
