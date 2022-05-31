@@ -6,6 +6,8 @@ import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import Loader from '../../components/Loader/Loader';
 import { useNavigate } from 'react-router-dom';
 
+const CLOUDINARY_URL = import.meta.env.VITE_CLOUDINARY_URL;
+
 const Register = () => {
   const [user, setUser] = useState({
     name: '',
@@ -65,7 +67,7 @@ const Register = () => {
       data.append('upload_preset', 'kapilrc')
       data.append('cloud_name', 'notesapp')
       try {
-        const { data:resp } = await axios.post('https://api.cloudinary.com/v1_1/notesapp/image/upload', data)
+        const { data:resp } = await axios.post(CLOUDINARY_URL, data)
         console.log(resp);
         setUser({...user, imageURL: resp.url});
       }catch(err) {
