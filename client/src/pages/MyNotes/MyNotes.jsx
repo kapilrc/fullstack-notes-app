@@ -1,14 +1,23 @@
+import { useEffect, useState } from 'react';
 import MainScreen from '../../components/MainContainer/MainScreen'
 import { Link } from 'react-router-dom';
-import { Accordion, Button, Card } from 'react-bootstrap';
-import notes from './../../db/notes.json'
+import { Accordion, Badge, Button, Card } from 'react-bootstrap';
+import axios from 'axios';
 import './mynotes.css'
 
 const MyNotes = () => {
+  const [notes, setNotes] = useState([]);
 
   const onDelete = id => {
     console.log("deleting ", id)
   }
+
+  const getNotes = async () => {
+    const { data } = await axios.get('http://localhost:3001/api/notes');
+    setNotes(data);
+  }
+
+  useEffect(() => getNotes, [])
 
   return (
     <MainScreen title="Welcome back Kapil">
@@ -37,7 +46,7 @@ const MyNotes = () => {
               </Card.Header>
               <Accordion.Body eventKey="0">
                 <Card.Body>
-                    <div class="badge bg-success mb-3">Category - {note.category}</div>
+                    <div className="badge bg-success mb-3">Category - {note.category}</div>
                     <blockquote className="blockquote mb-0">
                       <p>
                         {note.content}

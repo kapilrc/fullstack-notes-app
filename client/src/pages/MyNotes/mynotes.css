@@ -3,14 +3,11 @@
 
 }
 
-.accordion-item .accordion-button {
-  background-color: transparent;
-}
-
-.accordion-item button:focus {
+.accordion-item .accordion-button,
+.accordion-item .accordion-button:focus {
+  background-color: transparent !important;
   box-shadow: none;
   border: none;
-  background-color: transparent;
 }
 
 .accordion-item .accordion-button::after {
