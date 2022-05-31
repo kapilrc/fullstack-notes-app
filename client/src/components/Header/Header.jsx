@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   Container,
   Form,
@@ -7,9 +8,15 @@ import {
   Navbar,
   NavDropdown,
 } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.removeItem('userInfo');
+    navigate('/');
+  }
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid="md">
@@ -36,10 +43,11 @@ const Header = () => {
               <Link to="/my-notes">My Notes</Link>
             </Nav.Link>
             <NavDropdown title="Kapil" id="basic-nav-dropdown">
-              <NavDropdown.Item>
-                <Link to="/my-profile">My Profile</Link></NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate('/profile')}>
+                My Profile
+              </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="/logout">Logout</NavDropdown.Item>
+              <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
