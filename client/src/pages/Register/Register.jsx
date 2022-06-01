@@ -5,6 +5,8 @@ import MainScreen from '../../components/MainContainer/MainScreen'
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import Loader from '../../components/Loader/Loader';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearError, register } from '../../actions/userActions';
 
 const CLOUDINARY_URL = import.meta.env.VITE_CLOUDINARY_URL;
 
@@ -17,41 +19,17 @@ const Register = () => {
     imageURL: 'https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png'
   });
 
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [picMessage, setPicMessage] = useState(null);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const userRegister = useSelector(state => state.userRegister);
+  const { loading, error, userInfo } = userRegister;
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    if(user.password !== user.confirmPassword) {
-      setError('Passwords don not match!')
-      return;
-    }
-    
-    setError(false);
-
-    try {
-      const config = {
-        headers: {
-          "Content-type": "application/json"
-        }
-      }
-      setLoading(true);
-      const { name, email, password, imageURL } = user;
-      const { data } = await axios.post('http://localhost:3001/api/user', {
-        name, email, password, imageURL
-      }, config);
-      // localStorage.setItem("userInfo", JSON.stringify(data))
-      navigate('/login');
-    }catch(err) {
-      console.log(err?.response?.data?.message);
-      setError(err?.response?.data?.message || err?.message);
-    }finally {
-      setLoading(false);
-    }
+    dispatch(register(user));
   }
 
   const uploadPic = async (pic) => {
@@ -81,15 +59,19 @@ const Register = () => {
 
   useEffect(() => {
     error && setTimeout(() => {
-      setError(false);
+      dispatch(clearError());
     }, 5000);
-  }, [error]);
+  }, [error, dispatch]);
 
   useEffect(() => {
     picMessage && setTimeout(() => {
       setPicMessage(false);
     }, 5000);
   }, [picMessage]);
+
+  useEffect(() => {
+    userInfo && navigate('/my-notes');
+  }, [userInfo]);
 
   return (
     <MainScreen title="REGISTER">

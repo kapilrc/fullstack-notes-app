@@ -44,7 +44,7 @@ const MyNotes = () => {
                     <Button variant='danger' className='mx-2' onClick={() => onDelete(note._id)}>Delete</Button>
                   </div>
               </Card.Header>
-              <Accordion.Body eventKey="0">
+              <Accordion.Body>
                 <Card.Body>
                     <div className="badge bg-success mb-3">Category - {note.category}</div>
                     <blockquote className="blockquote mb-0">

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Container,
   Form,
@@ -8,12 +9,18 @@ import {
   Navbar,
   NavDropdown,
 } from 'react-bootstrap'
+import { logout } from '../../actions/userActions';
 
 const Header = () => {
   const navigate = useNavigate();
 
-  const logout = () => {
-    localStorage.removeItem('userInfo');
+  const dispatch = useDispatch();
+
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const logoutHandler = () => {
+    dispatch(logout());
     navigate('/');
   }
 
@@ -39,15 +46,15 @@ const Header = () => {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link>
-              <Link to="/my-notes">My Notes</Link>
-            </Nav.Link>
+            {/* <Nav.Link> */}
+              <Link className='nav-link' to="/my-notes">My Notes</Link>
+            {/* </Nav.Link> */}
             <NavDropdown title="Kapil" id="basic-nav-dropdown">
               <NavDropdown.Item onClick={() => navigate('/profile')}>
                 My Profile
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+              <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

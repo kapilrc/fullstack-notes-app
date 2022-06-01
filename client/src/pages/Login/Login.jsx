@@ -6,53 +6,34 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loader from '../../components/Loader/Loader';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearError, login } from '../../actions/userActions';
 
 const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const [userInfo, setUserInfo] = useState(localStorage.getItem('userInfo'))
 
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const userLogin = useSelector(state => state.userLogin);
+
+  const { loading, error, userInfo } = userLogin;
   
   const submitHandler = async (e) => {
     e.preventDefault();
-    // console.log(email, password);
-
-    try {
-      const config = {
-        headers: {
-          "Content-type": "application/json"
-        }
-      }
-      setLoading(true);
-      const { data } = await axios.post('http://localhost:3001/api/user/login', {
-        email, password
-      }, config);
-      
-      setUserInfo(() => localStorage.setItem("userInfo", JSON.stringify(data)))
-      
-    }catch(err) {
-      console.log(err?.response?.data?.message);
-      setError(err?.response?.data?.message);
-      
-    }finally {
-      setLoading(false);
-    }
+    dispatch(login(email, password));
   }
 
   useEffect(() => {
     error && setTimeout(() => {
-      setError(false)
+      dispatch(clearError())
     }, 5000);
-  }, [error]);
+  }, [error, dispatch]);
 
   useEffect(() => {
-    const userInfo = localStorage.getItem('userInfo');
-
     userInfo && navigate('/my-notes');
   }, [userInfo]);
 
@@ -63,12 +44,12 @@ const Login = () => {
       <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Remember me" />
