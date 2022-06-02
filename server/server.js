@@ -3,8 +3,8 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
 
-const notesRouter = require("./routes/Notes");
-const usersRouter = require("./routes/User");
+const noteRouter = require("./routes/Note");
+const userRouter = require("./routes/User");
 const { notFound, errorHandler } = require("./middlewares/error");
 
 const app = express();
@@ -23,9 +23,9 @@ app.get("/api/", (req, res) => {
   res.send("hello world");
 });
 
-app.use("/api/notes", notesRouter);
+app.use("/api/notes", noteRouter);
 
-app.use("/api/user", usersRouter);
+app.use("/api/user", userRouter);
 
 // use error handler middleware
 app.use(notFound);
