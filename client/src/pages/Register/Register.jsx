@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import { Button, Form } from 'react-bootstrap'
 import MainScreen from '../../components/MainContainer/MainScreen'
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
@@ -7,6 +6,7 @@ import Loader from '../../components/Loader/Loader';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearError, register } from '../../actions/userActions';
+import Api from '../../api';
 
 const CLOUDINARY_URL = import.meta.env.VITE_CLOUDINARY_URL;
 
@@ -45,7 +45,7 @@ const Register = () => {
       data.append('upload_preset', 'kapilrc')
       data.append('cloud_name', 'notesapp')
       try {
-        const { data:resp } = await axios.post(CLOUDINARY_URL, data)
+        const { data:resp } = await Api.post(CLOUDINARY_URL, data)
         console.log(resp);
         setUser({...user, imageURL: resp.url});
       }catch(err) {

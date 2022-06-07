@@ -9,7 +9,7 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS
 } from '../constants/user';
-import axios from 'axios';
+import Api from '../api';
 
 export const login = (email, password) => async (dispatch) => {
   // console.log(email, password);
@@ -23,8 +23,8 @@ export const login = (email, password) => async (dispatch) => {
       }
     }
 
-    const { data } = await axios.post(
-      'http://localhost:3001/api/user/login',
+    const { data } = await Api.post(
+      '/user/login',
       { email, password },
       config
     );
@@ -62,8 +62,8 @@ export const register = ({ name, email, password, confirmPassword, pic }) => asy
       }
     }
 
-    const { data } = await axios.post(
-      'http://localhost:3001/api/user',
+    const { data } = await Api.post(
+      '/user',
       { name, email, password, pic },
       config
     );
