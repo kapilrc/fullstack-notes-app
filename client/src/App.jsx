@@ -9,6 +9,7 @@ import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import MyNotes from './pages/MyNotes/MyNotes';
 import CreateNote from './pages/CreateNote/CreateNote';
+import EditNote from './pages/EditNote/EditNote';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
          <Route path="/register" element={<Register />} />
          <Route path="/my-notes" element={<MyNotes />} />
          <Route path="/create-note" element={<CreateNote />} />
+         <Route path="/note/:id" element={<EditNote />} />
        </Routes>
       </main>
       <Footer />

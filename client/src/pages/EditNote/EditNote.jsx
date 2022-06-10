@@ -1,27 +1,31 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { createNote, clearMessage } from '../../actions/notesActions';
+import { clearMessage, updateNote, getANote } from '../../actions/notesActions';
 import MainScreen from '../../components/MainContainer/MainScreen';
 import Loader from '../../components/Loader/Loader';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import { Form, Button, Card, Tabs, Tab } from 'react-bootstrap';
 import ReactMarkDown from 'react-markdown';
 
-const CreateNote = () => {
+const EditNote = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { id } = useParams();
 
-  const emptyNote = {
+  const [note, setNote] = useState({
     title: '',
     content: '',
-    category: ''
-  }
+    category: '',
+    updatedAt: ''
+  });
 
-  const [note, setNote] = useState({...emptyNote});
+  const updatedNoteState = useSelector( state => state.noteUpdate );
+  const { loading, error, updatedNote } = updatedNoteState;
 
-  const newNoteState = useSelector(state => state.noteCreate);
-  const { loading, error, newNote } = newNoteState;
+
+  const currentNoteState = useSelector( state => state.noteGet );
+  const { error: currentNoteError, note: currentNote } = currentNoteState;
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -31,40 +35,59 @@ const CreateNote = () => {
       // dispatch(createNoteError("Please provide all required fields")); WIP
       return;
     };
-     dispatch(createNote(note))
+    dispatch(updateNote(note));
   }
 
   useEffect(() => {
-    if(newNote && note.title) {
-      setNote({...emptyNote});
-      navigate('/my-notes');
-      dispatch(clearMessage());
-    } 
-  }, [newNote]);
+    dispatch(getANote(id));
+  }, [id]);
 
   useEffect(() => {
-    error && setTimeout(() => {
+    setNote(currentNote);
+  }, [currentNote]);
+
+  const onChange = (e) => {
+    setNote({
+      ...note,
+      [e.target.name]: e.target.value
+    });
+  };  
+
+  useEffect(() => {
+    if(updatedNote) {
+      navigate('/my-notes');
+      dispatch(clearMessage());
+    }
+  }, [updatedNote, dispatch]);
+
+  useEffect(() => {
+    (error) && setTimeout(() => {
       dispatch(clearMessage());
     }, 5000);
   }, [error, dispatch]);
 
   return (
-    <MainScreen title="NEW NOTE">
-      <Card>
+    <MainScreen title="Edit Note">
+      { currentNoteError ? 
+        <ErrorMessage variant='danger'> { currentNoteError } </ErrorMessage> 
+        :
+
+        <Card>
         <Card.Header>
-          Create a new Note
+          Edit a note
         </Card.Header>
         <Card.Body>
           <Form onSubmit={submitHandler}>
             { loading && <Loader /> }
-            { error && <ErrorMessage variant='danger'> { error } </ErrorMessage> }
+            { (error || currentNoteError) && <ErrorMessage variant='danger'> { error || currentNoteError } </ErrorMessage> }
             <Form.Group className="mb-3" controlId="title">
               <Form.Label>Title *</Form.Label>
               <Form.Control 
                 type="text"
-                value={note.title}
+                value={note?.title}
+                name="title"
                 placeholder="Title"
-                onChange={(e) => setNote({...note, title: e.target.value})}
+                onChange={onChange}
               />
             </Form.Group>
 
@@ -74,9 +97,10 @@ const CreateNote = () => {
                   <Form.Control 
                     as="textarea"
                     rows={5}
-                    value={note.content}
+                    value={note?.content}
+                    name="content"
                     placeholder="Content"
-                    onChange={(e) => setNote({...note, content: e.target.value})}
+                    onChange={onChange}
                   />
                 </Form.Group>
               </Tab>
@@ -86,7 +110,7 @@ const CreateNote = () => {
                     Note Preview
                   </Card.Header>
                   <Card.Body>
-                    <ReactMarkDown>{note.content}</ReactMarkDown>
+                    <ReactMarkDown>{note?.content}</ReactMarkDown>
                   </Card.Body>
                 </Card>
               </Tab>
@@ -96,9 +120,10 @@ const CreateNote = () => {
               <Form.Label>Category *</Form.Label>
               <Form.Control 
                 type="text" 
-                value={note.category}
+                name="category"
+                value={note?.category}
                 placeholder="Category"
-                onChange={(e) => setNote({...note, category: e.target.value})}
+                onChange={onChange}
               />
             </Form.Group>
 
@@ -109,11 +134,13 @@ const CreateNote = () => {
         </Card.Body>
 
         <Card.Footer className="text-muted">
-          Creating on - { new Date().toLocaleDateString() }
+          { note?.updatedAt ? `Created on - ${new Date(note.updatedAt).toLocaleDateString()}` : 'loading...' }
         </Card.Footer>
       </Card>
+      
+      }
     </MainScreen>
   )
 }
 
-export default CreateNote
+export default EditNote

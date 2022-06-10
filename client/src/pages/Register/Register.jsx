@@ -27,7 +27,7 @@ const Register = () => {
   const userRegister = useSelector(state => state.userRegister);
   const { loading, error, userInfo } = userRegister;
 
-  const submitHandler = async (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
     dispatch(register(user));
   }
