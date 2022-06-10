@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import MyNotes from './pages/MyNotes/MyNotes';
+import CreateNote from './pages/CreateNote/CreateNote';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
          <Route path="/login" element={<Login />} />
          <Route path="/register" element={<Register />} />
          <Route path="/my-notes" element={<MyNotes />} />
+         <Route path="/create-note" element={<CreateNote />} />
        </Routes>
       </main>
       <Footer />

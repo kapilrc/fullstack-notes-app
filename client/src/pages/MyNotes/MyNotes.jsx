@@ -1,26 +1,41 @@
 import { useEffect, useState } from 'react';
 import MainScreen from '../../components/MainContainer/MainScreen'
-import { Link } from 'react-router-dom';
-import { Accordion, Badge, Button, Card } from 'react-bootstrap';
-import './mynotes.css'
+import { Link, useNavigate } from 'react-router-dom';
+import { Accordion, Button, Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { listNotes } from '../../actions/notesActions';
 import Loader from '../../components/Loader/Loader';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
+import ReactMarkDown from 'react-markdown';
+import './mynotes.css'
 
 const MyNotes = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
 
   const notesList = useSelector(state => state.notesList);
   const { loading, error, notes } = notesList;
 
+  const newNote = useSelector(state => state.noteCreate);
+  const { success: successCreate } = newNote;
+
   const onDelete = id => {
-    console.log("deleting ", id)
+    if(window.confirm('Are you sure you want to delete this note?')) {
+      // dispatch(deleteNote(id));
+      console.log("deleting note ")
+    }
   }
 
   useEffect(() => {
     dispatch(listNotes());
-  }, [dispatch])
+    console.log(userInfo)
+    if(!userInfo) {
+      navigate('/');
+    }
+  }, [dispatch, successCreate, userInfo])
   
   useEffect(() => {
     error && setTimeout(() => {
@@ -38,7 +53,7 @@ const MyNotes = () => {
           loading && <Loader />
         }
         {
-          notes?.map((note, idx) => (
+          notes?.reverse().map((note, idx) => (
             <Accordion.Item key={note._id} eventKey={idx}>
               <Card style={{ marginTop: 10 }}>
                 <Card.Header style={{ display: "flex", alignItems: 'center' }}>
@@ -60,9 +75,9 @@ const MyNotes = () => {
                   <Card.Body>
                       <div className="badge bg-success mb-3">Category - {note.category}</div>
                       <blockquote className="blockquote mb-0">
-                        <p>
+                        <ReactMarkDown>
                           {note.content}
-                        </p>
+                        </ReactMarkDown>
                         <footer className="blockquote-footer">
                           created on {" "}
                           <cite title="Source Title">
