@@ -9,7 +9,7 @@ import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import ReactMarkDown from 'react-markdown';
 import './mynotes.css'
 
-const MyNotes = () => {
+const MyNotes = ({ search }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -57,7 +57,9 @@ const MyNotes = () => {
         { error && <ErrorMessage variant='danger'> { error } </ErrorMessage> }
 
         { !loading && 
-          notes?.reverse().map((note, idx) => (
+          notes?.reverse()
+          .filter(filteredNotes => filteredNotes?.title?.toLowerCase().includes(search.toLowerCase()))
+          .map((note, idx) => (
             <Accordion.Item key={note._id} eventKey={idx}>
               <Card style={{ marginTop: 10 }}>
                 <Card.Header style={{ display: "flex", alignItems: 'center' }}>

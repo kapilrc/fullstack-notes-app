@@ -12,17 +12,18 @@ import CreateNote from './pages/CreateNote/CreateNote';
 import EditNote from './pages/EditNote/EditNote';
 
 function App() {
+  const [search, setSearch] = useState("");
 
   return (
     <>
-      <Header />
+      <Header setSearch={setSearch} />
       <main>
        <Routes>
          <Route path="/" exact element={<LandingPage />} />
          <Route path="/home" element={<Dashboard />} />
          <Route path="/login" element={<Login />} />
          <Route path="/register" element={<Register />} />
-         <Route path="/my-notes" element={<MyNotes />} />
+         <Route path="/my-notes" element={<MyNotes search={ search } />} />
          <Route path="/create-note" element={<CreateNote />} />
          <Route path="/note/:id" element={<EditNote />} />
        </Routes>

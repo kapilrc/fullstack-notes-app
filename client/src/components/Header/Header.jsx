@@ -11,7 +11,7 @@ import {
 } from 'react-bootstrap'
 import { logout } from '../../actions/userActions';
 
-const Header = () => {
+const Header = ({ setSearch }) => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -38,6 +38,7 @@ const Header = () => {
                 placeholder="Search"
                 className="me-2"
                 aria-label="Search"
+                onChange={ (e) => setSearch(e.target.value) }
               />
             </Form>
           </Nav>
