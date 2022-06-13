@@ -50,7 +50,7 @@ const Header = ({ setSearch }) => {
             {/* <Nav.Link> */}
               <Link className='nav-link' to="/my-notes">My Notes</Link>
             {/* </Nav.Link> */}
-            <NavDropdown title="Kapil" id="basic-nav-dropdown">
+            <NavDropdown title={userInfo?.name || "Hi"} id="basic-nav-dropdown">
               <NavDropdown.Item onClick={() => navigate('/profile')}>
                 My Profile
               </NavDropdown.Item>
