@@ -10,6 +10,7 @@ import Register from './pages/Register/Register';
 import MyNotes from './pages/MyNotes/MyNotes';
 import CreateNote from './pages/CreateNote/CreateNote';
 import EditNote from './pages/EditNote/EditNote';
+import Profile from './pages/Profile/Profile';
 
 function App() {
   const [search, setSearch] = useState("");
@@ -23,6 +24,7 @@ function App() {
          <Route path="/home" element={<Dashboard />} />
          <Route path="/login" element={<Login />} />
          <Route path="/register" element={<Register />} />
+         <Route path="/profile" element={<Profile />} />
          <Route path="/my-notes" element={<MyNotes search={ search } />} />
          <Route path="/create-note" element={<CreateNote />} />
          <Route path="/note/:id" element={<EditNote />} />

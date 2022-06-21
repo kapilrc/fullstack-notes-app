@@ -57,7 +57,37 @@ const authUser = asyncHandler(async (req, res) => {
       message: 'Invalid Email or Password! Please try again'
     });
   }
+});
+
+const updateUserProfile = asyncHandler(async (req, res) => {
+
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    const { name, email, password, imageURL } = req.body;
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.imageURL = imageURL || user.imageURL;
+
+    if (password) {
+      user.password = password;
+    }
+
+    const updateUser = await user.save();
+    res.json({
+      _id: updateUser._id,
+      name: updateUser.name, //name.charAt(0).toUpperCase()+name.slice(1).toLowerCase(),
+      email: updateUser.email.toLowerCase(),
+      imageURL: updateUser.imageURL,
+      isAdmin: updateUser.isAdmin,
+      token: generateToken(updateUser._id)
+    })
+
+  } else {
+    res.status(400);
+    throw new Error('User not found!');
+  }
 
 });
 
-module.exports = { registerUser, authUser };
+module.exports = { registerUser, authUser, updateUserProfile };

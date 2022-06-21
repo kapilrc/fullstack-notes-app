@@ -16,7 +16,7 @@ const MainScreen = ({ children, title }) => {
             { title && (
               <>
                 <h1 className="heading">{title}</h1>
-                <hr />
+                <hr className="mt-0"/>
               </>
             )}
             { children }

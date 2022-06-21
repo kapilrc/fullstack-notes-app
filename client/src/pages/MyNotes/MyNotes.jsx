@@ -45,7 +45,7 @@ const MyNotes = ({ search }) => {
   }, [error, dispatch]);
 
   return (
-    <MainScreen title="Welcome back Kapil">
+    <MainScreen title={`Welcome back ${userInfo?.name}`}>
       <Link to="/create-note">
         <Button size="lg">Create new note</Button>
       </Link>
