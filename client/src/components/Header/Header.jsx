@@ -29,42 +29,45 @@ const Header = ({ setSearch }) => {
       <Container fluid="md">
         <Navbar.Brand>
         <Link to="/">Notes App</Link></Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-          <Nav className='m-auto'>
-            <Form className="d-flex">
-              <FormControl
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search"
-                onChange={ (e) => setSearch(e.target.value) }
-              />
-            </Form>
-          </Nav>
-          <Nav
-            className="my-2 my-lg-0"
-            style={{ maxHeight: '100px' }}
-            navbarScroll
-          >
-            {
-              userInfo ? (
-                <>
-                  <Link className='nav-link' to="/my-notes">My Notes</Link>
-                  <NavDropdown title={userInfo?.name || "Hi"} id="basic-nav-dropdown">
-                    <NavDropdown.Item onClick={() => navigate('/profile')}>
-                      My Profile
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
-                  </NavDropdown>
-                </>
-              ) : (
-                <Link className='nav-link' to="/login">Login</Link>
-              )
-            }
-          </Nav>
-        </Navbar.Collapse>
+
+        {
+          userInfo ? (
+            <>
+            <Navbar.Toggle aria-controls="navbarScroll" />
+            <Navbar.Collapse id="navbarScroll">
+              <Nav className='m-auto'>
+                <Form className="d-flex">
+                  <FormControl
+                    type="search"
+                    placeholder="Search"
+                    className="me-2"
+                    aria-label="Search"
+                    onChange={ (e) => setSearch(e.target.value) }
+                  />
+                </Form>
+              </Nav>
+              <Nav
+                className="my-2 my-lg-0"
+                style={{ maxHeight: '100px' }}
+                navbarScroll
+              >
+                <Link className='nav-link' to="/my-notes">My Notes</Link>
+                <NavDropdown title={userInfo?.name || "Hi"} id="basic-nav-dropdown">
+                  <NavDropdown.Item onClick={() => navigate('/profile')}>
+                    My Profile
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+            </Navbar.Collapse>
+            </>
+          ) : (
+            <Nav className=''>
+              <Link className='nav-link' to="/login">Login</Link>
+            </Nav>
+          )
+        }
       </Container>
     </Navbar>
   )
