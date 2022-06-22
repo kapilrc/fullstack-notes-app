@@ -29,7 +29,7 @@ __dirname = path.resolve();
 console.log(__dirname)
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/dist')));
+  app.use(express.static(path.join(__dirname, '/client/dist')));
 
   app.get('*', (req, res) => {
     res.send(path.resolve(__dirname, 'client', 'dist', 'index.html'))
