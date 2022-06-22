@@ -10,6 +10,7 @@ import {
   NavDropdown,
 } from 'react-bootstrap'
 import { logout } from '../../actions/userActions';
+import { changeTheme } from '../../actions/themeAction';
 
 const Header = ({ setSearch }) => {
   const navigate = useNavigate();
@@ -24,11 +25,26 @@ const Header = ({ setSearch }) => {
     navigate('/');
   }
 
+  const theme = useSelector(state => state.theme);
+
+  const switchTheme = (theme) => {
+    // console.log(theme);
+    dispatch(changeTheme(theme));
+  }
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid="md">
         <Navbar.Brand>
         <Link to="/">Notes App</Link></Navbar.Brand>
+
+        <NavDropdown title={`Theme  - ${theme}`} id="basic-nav-dropdown">
+          <NavDropdown.Item className={theme === 'Sketchy' ? 'active': ''} onClick={() => switchTheme('Sketchy')}>
+            Sketchy
+          </NavDropdown.Item>
+          <NavDropdown.Divider />
+          <NavDropdown.Item className={theme === 'Yeti' ? 'active': ''} onClick={() => switchTheme('Yeti')}>Yeti</NavDropdown.Item>
+        </NavDropdown>
 
         {
           userInfo ? (

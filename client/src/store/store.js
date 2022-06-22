@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { userLoginReducer, userRegisterReducer, userUpdateReducer } from '../reducers/userReducer';
 import { notesCreateReducer, notesDeleteReducer, notesGetReducer, notesListReducer, notesUpdateReducer } from '../reducers/notesReducer';
+import { themeReducer } from '../reducers/themeReducer';
 
 const reducer = combineReducers({
   // reducers go here
@@ -13,13 +14,16 @@ const reducer = combineReducers({
   noteCreate: notesCreateReducer,
   noteUpdate: notesUpdateReducer,
   noteGet: notesGetReducer,
-  noteDelete: notesDeleteReducer
+  noteDelete: notesDeleteReducer,
+  theme: themeReducer
 });
 
 const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+const theme = JSON.parse(localStorage.getItem('theme')) || 'Sketchy';
 
 const initialState = {
-  userLogin: { userInfo }
+  userLogin: { userInfo },
+  theme
 }
 
 const middleware = [thunk];
