@@ -1,19 +1,34 @@
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Routes, Route, Link } from "react-router-dom"
 import './App.css'
-import Header from './components/Header/Header'
-import Footer from './components/Footer/Footer';
-import LandingPage from './pages/LandingPage/LandingPage';
-import Dashboard from './pages/Dashboard/Dashboard';
-import Login from './pages/Login/Login';
-import Register from './pages/Register/Register';
-import MyNotes from './pages/MyNotes/MyNotes';
-import CreateNote from './pages/CreateNote/CreateNote';
-import EditNote from './pages/EditNote/EditNote';
-import Profile from './pages/Profile/Profile';
+import { useSelector } from 'react-redux';
+import './bootstrap-yeti.min.css'
+
+const Header = React.lazy(() => import('./components/Header/Header'));
+const Footer = React.lazy(() => import('./components/Footer/Footer'));
+const LandingPage = React.lazy(() => import('./pages/LandingPage/LandingPage'));
+const Dashboard = React.lazy(() => import('./pages/Dashboard/Dashboard'));
+const Login = React.lazy(() => import('./pages/Login/Login'));
+const Register = React.lazy(() => import('./pages/Register/Register'));
+const MyNotes = React.lazy(() => import('./pages/MyNotes/MyNotes'));
+const CreateNote = React.lazy(() => import('./pages/CreateNote/CreateNote'));
+const EditNote = React.lazy(() => import('./pages/EditNote/EditNote'));
+const Profile = React.lazy(() => import('./pages/Profile/Profile'));
 
 function App() {
   const [search, setSearch] = useState("");
+
+  const theme = useSelector(state => state.theme);
+
+
+  useEffect(() => {
+    if(theme === 'Yeti') {
+      import('./bootstrap-yeti.min.css');
+    }else {
+      import('./bootstrap.min.css');
+    }
+  }, [theme])
+
 
   return (
     <>
