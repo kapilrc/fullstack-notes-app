@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
+const path = require('path');
 
 const noteRouter = require("./routes/Note");
 const userRouter = require("./routes/User");
@@ -19,13 +20,31 @@ app.use(cors());
 
 // Routers
 
-app.get("/api/", (req, res) => {
-  res.send("hello world");
-});
-
 app.use("/api/notes", noteRouter);
-
 app.use("/api/user", userRouter);
+
+// ------------- deployment -------------
+
+__dirname = path.resolve();
+console.log(__dirname)
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+
+  app.get('*', (req, res) => {
+    res.send(path.resolve(__dirname, 'client', 'dist', 'index.html'))
+  })
+
+} else {
+  app.get("/api/", (req, res) => {
+    res.send("hello world");
+  });
+}
+
+
+
+
+// ------------- deployment -------------
 
 // use error handler middleware
 app.use(notFound);
