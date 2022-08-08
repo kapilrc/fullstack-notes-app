@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './login.css'
 import MainScreen from '../../components/MainContainer/MainScreen';
-import { Form, Button, Row } from 'react-bootstrap';
+import { Form, Button, Row, Container } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loader from '../../components/Loader/Loader';
@@ -38,7 +38,7 @@ const Login = () => {
   }, [userInfo]);
 
   return <MainScreen title="LOGIN">
-    <div className="loginContainer">
+    <Container className="loginContainer">
       { loading && <Loader /> }
       { error && <ErrorMessage variant='danger'> { error } </ErrorMessage> }
       <Form onSubmit={submitHandler}>
@@ -58,10 +58,10 @@ const Login = () => {
           Submit
         </Button>
       </Form>
-      <Row className='py-3'>
+      <div className='py-3'>
         New Customer? <Link to="/register">Register here</Link>
-      </Row>
-    </div>
+      </div>
+    </Container>
   </MainScreen>
 }
 
